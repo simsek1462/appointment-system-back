@@ -1,12 +1,14 @@
+// app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { ClinicModule } from './clinic/clinic.module';
 
 @Module({
   imports: [
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -19,6 +21,8 @@ import { AppService } from './app.service';
       synchronize: true,
       logging: true,
     }),
+    AuthModule,
+    ClinicModule, // <-- import et
   ],
   controllers: [AppController],
   providers: [AppService],
