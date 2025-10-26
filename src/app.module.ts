@@ -24,7 +24,7 @@ import { HospitalModule } from './hospital/hospital.module';
     }),
     AuthModule,
     ClinicModule,
-    HospitalModule, // <-- import et
+    HospitalModule,
   ],
   controllers: [AppController],
   providers: [AppService],

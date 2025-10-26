@@ -18,6 +18,6 @@ import { DistrictEntity } from 'src/common/entitties/district.entity';
   ],
   controllers: [HospitalController],
   providers: [HospitalService],
-  exports: [HospitalService], // optional: export if other modules need it
+  exports: [HospitalService],
 })
 export class HospitalModule {}

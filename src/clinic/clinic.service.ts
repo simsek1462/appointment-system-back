@@ -17,9 +17,10 @@ export class ClinicService {
 
   async create(createClinicDto: CreateClinicDto) {
     const { hospitalIds, ...rest } = createClinicDto;
-    const hospitals = await this.hospitalRepo.find({
-      where: { id: In(hospitalIds) },
-    });
+    const hospitals =
+      hospitalIds && hospitalIds.length
+        ? await this.hospitalRepo.find({ where: { id: In(hospitalIds) } })
+        : [];
     const clinic = this.clinicRepo.create({
       ...rest,
       hospitals,
@@ -28,20 +29,44 @@ export class ClinicService {
   }
 
   async findAll() {
-    return await this.clinicRepo.find();
+    return await this.clinicRepo.find({
+      relations: ['hospitals'],
+    });
   }
 
   async findOne(id: number) {
-    const clinic = await this.clinicRepo.findOne({ where: { id } });
+    const clinic = await this.clinicRepo.findOne({
+      where: { id },
+      relations: ['hospitals'],
+    });
     if (!clinic) throw new NotFoundException(`Clinic ${id} not found`);
     return clinic;
   }
 
-  update(id: number, updateClinicDto: UpdateClinicDto) {
-    return `This action updates a #${id} clinic`;
+  async update(id: number, updateClinicDto: UpdateClinicDto) {
+    const clinic = await this.clinicRepo.findOne({
+      where: { id },
+      relations: ['hospitals'],
+    });
+
+    if (!clinic)
+      return new NotFoundException(`Clinic with ID: ${id} not found.`);
+    const { hospitalIds, ...rest } = updateClinicDto;
+
+    if (hospitalIds) {
+      clinic.hospitals = await this.hospitalRepo.find({
+        where: { id: In(hospitalIds) },
+      });
+    }
+
+    Object.assign(clinic, rest);
+    return await this.clinicRepo.save(clinic);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} clinic`;
+  async remove(id: number) {
+    const result = await this.clinicRepo.delete(id);
+    if (result.affected === 0)
+      throw new NotFoundException(`Hospital ${id} not found`);
+    return { message: `Clinic with ID ${id} deleted successfully` };
   }
 }
