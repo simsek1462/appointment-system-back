@@ -4,9 +4,11 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { ClinicEntity } from 'src/clinic/entities/clinic.entity';
 import { HospitalEntity } from 'src/hospital/entities/hospital.entity';
+import { AppointmentEntity } from 'src/appointment/entities/appointment.entity';
 
 @Entity('doctors')
 export class DoctorEntity {
@@ -33,4 +35,6 @@ export class DoctorEntity {
   })
   @JoinColumn({ name: 'clinic_id' })
   clinic: ClinicEntity;
+  @OneToMany(() => AppointmentEntity, (appointment) => appointment.doctor)
+  appointments: AppointmentEntity[];
 }

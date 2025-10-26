@@ -7,6 +7,7 @@ import { ClinicEntity } from 'src/clinic/entities/clinic.entity';
 import { CityEntity } from 'src/common/entitties/city.entity';
 import { DistrictEntity } from 'src/common/entitties/district.entity';
 import { DoctorEntity } from 'src/doctor/entities/doctor.entity';
+import { AppointmentEntity } from 'src/appointment/entities/appointment.entity';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { DoctorEntity } from 'src/doctor/entities/doctor.entity';
       CityEntity,
       DistrictEntity,
       DoctorEntity,
+      AppointmentEntity,
     ]),
   ],
   controllers: [HospitalController],

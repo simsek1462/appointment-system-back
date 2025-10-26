@@ -1,3 +1,4 @@
+import { AppointmentEntity } from 'src/appointment/entities/appointment.entity';
 import { DoctorEntity } from 'src/doctor/entities/doctor.entity';
 import { HospitalEntity } from 'src/hospital/entities/hospital.entity';
 import {
@@ -22,6 +23,9 @@ export class ClinicEntity {
   hospitals: HospitalEntity[];
   @OneToMany(() => DoctorEntity, (doctor) => doctor.clinic)
   doctors?: DoctorEntity[];
+  @OneToMany(() => AppointmentEntity, (appointment) => appointment.clinic)
+  appointments: AppointmentEntity[];
+
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()

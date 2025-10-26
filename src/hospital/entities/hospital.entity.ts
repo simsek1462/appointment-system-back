@@ -1,3 +1,4 @@
+import { AppointmentEntity } from 'src/appointment/entities/appointment.entity';
 import { ClinicEntity } from 'src/clinic/entities/clinic.entity';
 import { CityEntity } from 'src/common/entitties/city.entity';
 import { DistrictEntity } from 'src/common/entitties/district.entity';
@@ -36,6 +37,9 @@ export class HospitalEntity {
   clinics?: ClinicEntity[];
   @OneToMany(() => DoctorEntity, (doctor) => doctor.hospital)
   doctors?: DoctorEntity[];
+  @OneToMany(() => AppointmentEntity, (appointment) => appointment.hospital)
+  appointments: AppointmentEntity[];
+
   @CreateDateColumn()
   createdAt: Date;
 
