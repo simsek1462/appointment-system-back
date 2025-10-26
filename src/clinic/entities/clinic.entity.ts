@@ -1,3 +1,4 @@
+import { DoctorEntity } from 'src/doctor/entities/doctor.entity';
 import { HospitalEntity } from 'src/hospital/entities/hospital.entity';
 import {
   Column,
@@ -5,6 +6,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -18,6 +20,8 @@ export class ClinicEntity {
   @ManyToMany(() => HospitalEntity, (hospital) => hospital.clinics)
   @JoinTable()
   hospitals: HospitalEntity[];
+  @OneToMany(() => DoctorEntity, (doctor) => doctor.clinic)
+  doctors?: DoctorEntity[];
   @CreateDateColumn()
   createdAt: Date;
   @UpdateDateColumn()

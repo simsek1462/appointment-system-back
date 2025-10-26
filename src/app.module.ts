@@ -7,6 +7,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ClinicModule } from './clinic/clinic.module';
 import { HospitalModule } from './hospital/hospital.module';
+import { DoctorModule } from './doctor/doctor.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { HospitalModule } from './hospital/hospital.module';
     AuthModule,
     ClinicModule,
     HospitalModule,
+    DoctorModule,
   ],
   controllers: [AppController],
   providers: [AppService],
