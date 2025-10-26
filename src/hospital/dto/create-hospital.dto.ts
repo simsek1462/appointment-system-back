@@ -1,4 +1,10 @@
-import { IsString, IsInt } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  IsOptional,
+  IsArray,
+  ArrayNotEmpty,
+} from 'class-validator';
 
 export class CreateHospitalDto {
   @IsString()
@@ -12,4 +18,8 @@ export class CreateHospitalDto {
 
   @IsInt()
   district_id: number;
+  @IsOptional()
+  @IsArray()
+  @ArrayNotEmpty()
+  clinicIds?: number[];
 }

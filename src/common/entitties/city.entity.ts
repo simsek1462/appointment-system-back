@@ -1,3 +1,4 @@
+import { IsNotEmpty } from 'class-validator';
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('cities')
@@ -6,5 +7,6 @@ export class CityEntity {
   id: number;
 
   @Column({ unique: true })
+  @IsNotEmpty()
   name: string;
 }

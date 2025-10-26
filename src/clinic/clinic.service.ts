@@ -1,19 +1,40 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateClinicDto } from './dto/create-clinic.dto';
 import { UpdateClinicDto } from './dto/update-clinic.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { In, Repository } from 'typeorm';
+import { ClinicEntity } from './entities/clinic.entity';
+import { HospitalEntity } from 'src/hospital/entities/hospital.entity';
 
 @Injectable()
 export class ClinicService {
-  create(createClinicDto: CreateClinicDto) {
-    return 'This action adds a new clinic';
+  constructor(
+    @InjectRepository(ClinicEntity)
+    private readonly clinicRepo: Repository<ClinicEntity>,
+    @InjectRepository(HospitalEntity)
+    private readonly hospitalRepo: Repository<HospitalEntity>,
+  ) {}
+
+  async create(createClinicDto: CreateClinicDto) {
+    const { hospitalIds, ...rest } = createClinicDto;
+    const hospitals = await this.hospitalRepo.find({
+      where: { id: In(hospitalIds) },
+    });
+    const clinic = this.clinicRepo.create({
+      ...rest,
+      hospitals,
+    });
+    return await this.clinicRepo.save(clinic);
   }
 
-  findAll() {
-    return `This action returns all clinic`;
+  async findAll() {
+    return await this.clinicRepo.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} clinic`;
+  async findOne(id: number) {
+    const clinic = await this.clinicRepo.findOne({ where: { id } });
+    if (!clinic) throw new NotFoundException(`Clinic ${id} not found`);
+    return clinic;
   }
 
   update(id: number, updateClinicDto: UpdateClinicDto) {

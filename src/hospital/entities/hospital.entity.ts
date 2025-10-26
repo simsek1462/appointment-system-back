@@ -1,3 +1,4 @@
+import { ClinicEntity } from 'src/clinic/entities/clinic.entity';
 import { CityEntity } from 'src/common/entitties/city.entity';
 import { DistrictEntity } from 'src/common/entitties/district.entity';
 import {
@@ -8,6 +9,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
+  ManyToMany,
 } from 'typeorm';
 
 @Entity('hospitals')
@@ -28,7 +30,8 @@ export class HospitalEntity {
   @ManyToOne(() => DistrictEntity)
   @JoinColumn({ name: 'district_id' })
   district: DistrictEntity;
-
+  @ManyToMany(() => ClinicEntity, (clinic) => clinic.hospitals)
+  clinics?: ClinicEntity[];
   @CreateDateColumn()
   createdAt: Date;
 

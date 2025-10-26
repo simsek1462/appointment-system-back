@@ -6,6 +6,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { ClinicModule } from './clinic/clinic.module';
+import { HospitalModule } from './hospital/hospital.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { ClinicModule } from './clinic/clinic.module';
       logging: true,
     }),
     AuthModule,
-    ClinicModule, // <-- import et
+    ClinicModule,
+    HospitalModule, // <-- import et
   ],
   controllers: [AppController],
   providers: [AppService],

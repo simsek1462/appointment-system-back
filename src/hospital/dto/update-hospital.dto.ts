@@ -18,4 +18,5 @@ export class UpdateHospitalDto extends PartialType(CreateHospitalDto) {
   @IsOptional()
   @IsInt()
   district_id?: number;
+  clinicIds?: number[];
 }
