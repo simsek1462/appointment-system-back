@@ -1,34 +1,51 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Query,
+  Param,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { AppointmentService } from './appointment.service';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
+import { GetAvailableSlotsDto } from './dto/get-available-slots.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 
-@Controller('appointment')
+@Controller('appointments')
 export class AppointmentController {
-  constructor(private readonly appointmentService: AppointmentService) {}
-
-  @Post()
-  create(@Body() createAppointmentDto: CreateAppointmentDto) {
-    return this.appointmentService.create(createAppointmentDto);
-  }
-
+  constructor(private readonly service: AppointmentService) {}
   @Get()
   findAll() {
-    return this.appointmentService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.appointmentService.findOne(+id);
+    return this.service.findOne(Number(id));
   }
 
+  @Get('available-slots')
+  getAvailable(
+    @Query('doctorId') doctorId: string,
+    @Query('date') date: string,
+  ) {
+    return this.service.getAvailableSlots({
+      doctorId: Number(doctorId),
+      date,
+    });
+  }
+  @Post()
+  create(@Body() dto: CreateAppointmentDto) {
+    return this.service.create(dto);
+  }
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateAppointmentDto: UpdateAppointmentDto) {
-    return this.appointmentService.update(+id, updateAppointmentDto);
+  update(@Param('id') id: string, @Body() dto: UpdateAppointmentDto) {
+    return this.service.update(Number(id), dto);
   }
-
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.appointmentService.remove(+id);
+    return this.service.remove(Number(id));
   }
 }

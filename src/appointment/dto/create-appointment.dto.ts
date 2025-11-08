@@ -1,28 +1,24 @@
-import { IsInt, IsString, IsNotEmpty, IsOptional, IsIn } from 'class-validator';
+import { IsInt, IsString, IsOptional, IsIn, Matches } from 'class-validator';
+import {
+  STATUS_VALUES,
+  type AppointmentStatus,
+} from '../entities/appointment.entity';
 
 export class CreateAppointmentDto {
-  @IsInt()
-  doctorId: number;
+  @IsInt() doctorId: number;
+  @IsInt() hospitalId: number;
+  @IsInt() clinicId: number;
+  @IsInt() userId: number;
 
-  @IsInt()
-  hospitalId: number;
+  @IsOptional() @IsString() patientName?: string;
 
-  @IsInt()
-  clinicId: number;
+  @Matches(/^\d{4}-\d{2}-\d{2}$/)
+  date: string; // YYYY-MM-DD
 
-  @IsString()
-  @IsNotEmpty()
-  patientName: string;
-
-  @IsString()
-  @IsNotEmpty()
-  date: string; // DD-MM-YYYY
-
-  @IsString()
-  @IsNotEmpty()
-  time: string;
+  @Matches(/^\d{2}:\d{2}:\d{2}$/)
+  time: string; // HH:mm:ss
 
   @IsOptional()
-  @IsIn(['pending', 'confirmed', 'cancelled'])
-  status?: 'pending' | 'confirmed' | 'cancelled';
+  @IsIn(STATUS_VALUES)
+  status?: AppointmentStatus;
 }

@@ -5,8 +5,10 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BeforeInsert,
+  OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { AppointmentEntity } from 'src/appointment/entities/appointment.entity';
 
 @Entity('users')
 export class UserEntity {
@@ -18,6 +20,9 @@ export class UserEntity {
 
   @Column()
   password: string;
+
+  @OneToMany(() => AppointmentEntity, (appointment) => appointment.user)
+  appointments: AppointmentEntity[];
 
   @CreateDateColumn()
   createdAt: Date;
